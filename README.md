@@ -34,6 +34,16 @@ Hue Sensor is a service that polls the state of a local hue motion sensor and lo
 
         HueSensor listening on port 3000...
         
+     If you see an output like this:
+     
+     
+             [ { error: 
+             { type: 1,
+               address: '/sensors',
+               description: 'unauthorized user' } } ]
+               
+      The username that you entered is likely wrong. Stop the server and try again.
+      
  6. You should also see that a file named `HueSensor.log` was created
  7. Now, the next time you walk past your hue motion sensor you should see an entry of that change in state in the log file. Here's an example of that entry:
  
