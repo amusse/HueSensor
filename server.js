@@ -6,10 +6,10 @@ const log4js = require('log4js');
 const app = express();
 
 const PORT = 3000;
-const BRIDGE_IP_ADDRESS = "";
+const BRIDGE_IP_ADDRESS = ""; // Enter your Hue Bridge IP address here
 const HUE_BASE_URL = `http://${BRIDGE_IP_ADDRESS}/api`;
-const HUE_USERNAME = "";
-const MOTION_SENSOR_ID = "13";
+const HUE_USERNAME = ""; // Enter your Hue Username here
+const MOTION_SENSOR_ID = "13"; // Replace this with your motion sensor ID
 const PACIFIC_TIME_OFFSET = 7;
 const SENSOR_LOG_FILENAME = 'HueSensor.log'
 const MINUTES = 0.25;
