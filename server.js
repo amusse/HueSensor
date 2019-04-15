@@ -15,6 +15,8 @@ const SENSOR_LOG_FILENAME = 'HueSensor.log'
 const MINUTES = 0.25;
 const INTERVAL = MINUTES * 60 * 1000;
 
+var timer;
+
 log4js.configure({
     appenders: { HueSensor: {type: 'file', filename: SENSOR_LOG_FILENAME}},
     categories: { default: { appenders: ['HueSensor'], level: 'error' } }
@@ -36,7 +38,7 @@ app.get('/sensor/logs', (req, res) => {
 app.listen(PORT, () => {
     console.log(`HueSensor listening on port ${PORT}...`);
     getSensorLogs();
-    setInterval(getSensorLogs, INTERVAL);
+    timer = setInterval(getSensorLogs, INTERVAL);
 });
 
 function getSensorLogs() {
@@ -48,8 +50,7 @@ function getSensorLogs() {
         } catch (error) {
             logger.error("Error parsing response...");
         }
-         
-        if (sensor) {
+        if (sensor && sensor.state) {
             const lastUpdated = new Date(sensor.state.lastupdated);
             lastUpdated.setHours(lastUpdated.getHours() - PACIFIC_TIME_OFFSET);
             if (sensor.state.presence) {
@@ -58,8 +59,8 @@ function getSensorLogs() {
                 logger.info(`${sensor.name} State: ${sensor.state.presence}, LastUpdated: ${lastUpdated}`);
             }
         } else {
-            logger.error("Could not find sensor...");
+            console.log(sensor);
+            clearInterval(timer);
         }
-
     });
 }
