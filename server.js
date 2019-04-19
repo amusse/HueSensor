@@ -40,8 +40,8 @@ function parseLogs(logs) {
     var newData = '';
     lines.forEach(line => {
         const tokens = line.split(' ');
-        const date = tokens[0].replace('[', '').replace(']', '');
-        const localDate = (new Date(date)).toLocaleString('en-US', { hour12: true });
+        const date = new Date(tokens[0].replace('[', '').replace(']', ''));
+        const localDate = date.toLocaleString('en-US', { weekday: 'long' }) + ' ' + date.toLocaleString('en-US', { hour12: true });
         const regex = /(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?(Z)?\.[0-9]+/;
         const newLine = line.replace(regex, localDate);
         newData += newLine + '\n';
