@@ -30,10 +30,24 @@ app.get('/sensor/logs', (req, res) => {
             res.send(err);
         } else {
             res.header("Content-Type",'text/plain');
-            res.send(data);
+            res.send(parseLogs(data));
         }
     });
 })
+
+function parseLogs(logs) {
+    const lines = logs.split('\n');
+    var newData = '';
+    lines.forEach(line => {
+        const tokens = line.split(' ');
+        const date = tokens[0].replace('[', '').replace(']', '');
+        const localDate = (new Date(date)).toLocaleString('en-US', { hour12: true });
+        const regex = /(-?(?:[1-9][0-9]*)?[0-9]{4})-(1[0-2]|0[1-9])-(3[01]|0[1-9]|[12][0-9])T(2[0-3]|[01][0-9]):([0-5][0-9]):([0-5][0-9])(\\.[0-9]+)?(Z)?\.[0-9]+/;
+        const newLine = line.replace(regex, localDate);
+        newData += newLine + '\n';
+    });
+    return newData;
+}
 
 app.listen(PORT, () => {
     console.log(`HueSensor listening on port ${PORT}...`);
